@@ -1,0 +1,27 @@
+#root { min-height: 100vh; }
+
+.overview-shell {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  padding: 36px clamp(20px, 7vw, 104px) 24px;
+  background: radial-gradient(ellipse at 90% 8%, #d9f0e9 0, transparent 36%), #f4f8f8;
+}
+.overview-header { display: flex; align-items: center; gap: 13px; }
+.brand-mark { display: grid; width: 46px; height: 46px; place-items: center; border-radius: 15px; background: #0d3548; color: #e8fbf5; font-family: Manrope, sans-serif; font-size: 23px; font-weight: 800; }
+.eyebrow { margin: 0 0 5px; color: #438878; font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+.overview-header h1 { margin: 0; color: #103247; font-family: Manrope, sans-serif; font-size: 19px; }
+.welcome-card { width: min(740px, 100%); margin: auto; padding: clamp(28px, 6vw, 62px); border: 1px solid #e3eceb; border-radius: 28px; background: rgba(255, 255, 255, .92); box-shadow: 0 28px 80px rgba(18, 59, 70, .08); }
+.welcome-card h2 { max-width: 560px; margin: 14px 0; color: #103247; font-family: Manrope, sans-serif; font-size: clamp(30px, 5vw, 48px); line-height: 1.13; letter-spacing: -.04em; }
+.welcome-copy { max-width: 520px; margin: 0; color: #617780; font-size: 16px; line-height: 1.7; }
+.api-status { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 32px; padding: 11px 14px; border: 1px solid #deebe8; border-radius: 999px; background: #f7fbfa; color: #315b58; font-size: 13px; font-weight: 600; }
+.status-dot { width: 9px; height: 9px; border-radius: 50%; background: #d7a545; }
+.api-status--connected .status-dot { background: #31a77b; }
+.api-status--unavailable .status-dot { background: #d16058; }
+.service-name { padding-left: 10px; border-left: 1px solid #d8e4e1; color: #708681; font-weight: 400; }
+.overview-shell footer { color: #829397; font-size: 12px; }
+
+@media (max-width: 520px) {
+  .overview-shell { padding: 24px 16px 18px; }
+  .welcome-card { border-radius: 21px; }
+}

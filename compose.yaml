@@ -1,0 +1,20 @@
+services:
+  db:
+    image: postgis/postgis:16-3.4-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-jalrakshak_db}
+      POSTGRES_USER: ${POSTGRES_USER:-jalrakshak}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in the root .env file}
+    ports:
+      - "${POSTGRES_PORT:-5433}:5432"
+    volumes:
+      - jalrakshak_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+volumes:
+  jalrakshak_postgres_data:
