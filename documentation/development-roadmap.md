@@ -1,13 +1,13 @@
 # Development Roadmap
 
-**Target:** Functional, connected 60% MVP described in the JalRakshak blueprint. Each stage ends with a reviewable result and verification before the next dependent stage begins.
+**Target:** Functional, connected 60% MVP described in the JalRakshak blueprint. Each stage ends with a reviewable result and verification before the next dependent stage begins. Milestone 4 is the backend identity and core read API increment listed below as Stage 3; Milestone 5 and later work have not started.
 
 | Stage | Scope | Exit check |
 | --- | --- | --- |
 | 0. Blueprint and architecture review | Confirm requirements, architecture, folder layout, data decisions, demo-data policy, and MVP boundaries. | Architecture proposal accepted; open decisions are recorded. |
 | 1. Project initialization | Initialize Git in this empty project, create React/Vite and FastAPI application skeletons, add environment examples, dependency manifests, lint/format configuration, and setup docs. | Both apps start locally; configuration contains placeholders only; no prior project assets or data. |
 | 2. Database foundation | Create a fresh `jalrakshak_db`, verify PostgreSQL/PostGIS availability, implement SQLAlchemy setup and Alembic, migrate the approved MVP schema and add spatial fields/indexes. | Migration on clean DB; PostGIS and spatial indexes verified; database integration suite passes. |
-| 3. Backend identity and core records | Implement registration/login/current-user, password hashing/JWT, role dependencies, user admin functions, and water body CRUD/search/filter/pagination. | API tests cover auth, role denial, and CRUD; OpenAPI is accurate. |
+| 3. Backend identity and core read APIs (Milestone 4) | Implement citizen registration/login/current-user, password hashing/JWT, reusable role dependencies, and read-only water-body list/detail with pagination and GeoJSON. | API tests cover auth, role denial, safe errors, registry reads, and OpenAPI. |
 | 4. Monitoring workflows | Add assessments and review, field observations and verification, evidence upload, citizen reports and status workflow, water quality records, manually managed satellite records, and audit events. | Domain tests cover validation, permissions, history, uploads, and synthetic/real provenance. |
 | 5. Frontend foundation and records | Build responsive app shell, auth and role-aware navigation, water body list/detail/forms, assessment and observation workflows, citizen portal, quality and satellite screens, loading/empty/error states. | Frontend component/workflow checks and API integration checks pass for implemented flows. |
 | 6. Dashboard and GIS | Build Leaflet map, marker popups and filters, show only stored locations and valid boundaries, connect data-backed summary/charts and historical views. | Map and dashboard render API records; no fabricated boundaries or metrics; spatial API checks pass. |
@@ -26,10 +26,12 @@ AI image assessment, automated Sentinel-2 retrieval and processing, cloud maskin
 
 - [x] Blueprint reviewed; requirements summarized.
 - [x] Architecture proposal documented.
-- [x] Database architecture proposal documented; no schema implemented.
+- [x] Database architecture documented; the nine-table Milestone 3 schema and PostGIS indexes were migrated and verified.
 - [x] Milestones and stage exit checks documented.
 - [x] User approved modular monolith, technology stack, and unregistered-location citizen reports.
 - [x] Git, frontend and backend skeletons, environment examples, routing, CORS, health checks, and setup documentation created (Milestone 2).
 - [x] Milestone 2 verification report reviewed by user; user supplied implementation instruction for Milestone 3.
-- [ ] Stage 2 database foundation (schema and test suite implemented; runtime migration verification pending Docker/PostGIS availability).
-- [ ] Stages 3–8 implementation, verification, and acceptance.
+- [x] Milestone 3 database foundation: nine-table schema, Alembic migration, PostGIS, spatial indexes, isolated `jalrakshak_test`, and integration tests verified on JalRakshak Docker at host port 5433.
+- [x] Milestone 4 backend identity and core read API: Argon2 registration/login, JWT, role dependencies, water-body list/detail, API docs, and security/integration coverage.
+- [ ] Milestone 5 frontend foundation and records; not started.
+- [ ] Later monitoring workflows, GIS/dashboard, integration hardening, and MVP acceptance; not started.

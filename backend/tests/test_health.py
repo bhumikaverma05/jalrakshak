@@ -89,3 +89,13 @@ def test_database_url_rejects_non_postgresql_schemes() -> None:
             app_env="production",
             database_url="postgresql+psycopg://user:change-me@localhost/jalrakshak_db",
         )
+
+
+def test_production_requires_a_private_signing_key() -> None:
+    with pytest.raises(ValidationError):
+        Settings(
+            _env_file=None,
+            app_env="production",
+            database_url="postgresql+psycopg://user:secure@localhost/jalrakshak_db",
+            secret_key="replace-with-a-private-random-secret-of-at-least-32-characters",
+        )

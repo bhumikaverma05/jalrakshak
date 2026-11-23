@@ -20,6 +20,8 @@ class Settings(BaseSettings):
     database_max_overflow: int = Field(default=10, ge=0, le=128)
     database_connect_timeout: int = Field(default=5, ge=1, le=60)
     secret_key: str = ""
+    jwt_algorithm: str = "HS256"
+    access_token_expire_minutes: int = Field(default=30, ge=1, le=1440)
 
     model_config = SettingsConfigDict(
         env_file=".env",
@@ -40,13 +42,17 @@ class Settings(BaseSettings):
 
     @model_validator(mode="after")
     def validate_production_database_credentials(self) -> "Settings":
-        if self.app_env.casefold() == "production" and make_url(self.database_url).password in {
-            None,
-            "",
-            "change-me",
-            "replace-me",
-        }:
-            raise ValueError("Production DATABASE_URL must use a non-placeholder password")
+        if self.app_env.casefold() == "production":
+            if make_url(self.database_url).password in {None, "", "change-me", "replace-me"}:
+                raise ValueError("Production DATABASE_URL must use a non-placeholder password")
+            if len(self.secret_key) < 32 or self.secret_key.casefold().startswith(
+                ("replace-", "change-", "dev-only")
+            ):
+                raise ValueError(
+                    "Production SECRET_KEY must be a private key of at least 32 characters"
+                )
+        if self.jwt_algorithm != "HS256":
+            raise ValueError("JWT_ALGORITHM must be HS256")
         return self
 
 

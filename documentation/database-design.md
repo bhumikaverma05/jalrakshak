@@ -1,8 +1,8 @@
 # Database Architecture Proposal
 
-**Status:** Milestone 3 schema implemented in SQLAlchemy and managed by Alembic. Local PostgreSQL/PostGIS execution is pending because Docker is unavailable in the current environment.
+**Status:** Milestone 3 schema was applied and verified against the isolated JalRakshak PostgreSQL/PostGIS service on host port 5433. Milestone 4 reuses the existing `users` and `water_bodies` tables and adds no schema changes.
 
-**Verification note (2026-11-22):** Docker is not installed. A PostgreSQL 19 service is listening on port 5432, but the project example credentials were rejected; this service is not used because it may belong to the legacy EPICS project. Compose uses port 5433 by default to keep the new JalRakshak database isolated. No database tables were created and no existing data was changed during verification.
+**Verification note (2026-11-23):** The JalRakshak Compose database on host port 5433 runs PostgreSQL 16.4 and PostGIS 3.4.3. `jalrakshak_db` and `jalrakshak_test` were migrated to `20261122_0001`; the nine application tables and five spatial GiST indexes were verified. The unrelated PostgreSQL service on port 5432 remains untouched.
 
 ## 1. Database platform
 

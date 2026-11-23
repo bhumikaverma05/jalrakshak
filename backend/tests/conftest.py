@@ -7,10 +7,23 @@ from pathlib import Path
 import pytest
 from alembic.config import Config
 from sqlalchemy import create_engine
-from sqlalchemy.engine import Engine
+from sqlalchemy.engine import Engine, make_url
 from sqlalchemy.orm import Session
 
 from alembic import command
+
+os.environ.setdefault("SECRET_KEY", "test-only-secret-key-never-use-outside-tests-0123456789")
+
+
+def validate_test_database_url(url: str) -> None:
+    """Allow integration tests only on the named database through host port 5433."""
+    parsed = make_url(url)
+    if (
+        parsed.database != "jalrakshak_test"
+        or parsed.host not in {"localhost", "127.0.0.1"}
+        or parsed.port != 5433
+    ):
+        raise ValueError("Integration tests require jalrakshak_test on localhost port 5433")
 
 
 @pytest.fixture(scope="session")
@@ -20,11 +33,10 @@ def postgres_engine() -> Iterator[Engine]:
         pytest.skip(
             "Set TEST_DATABASE_URL to a disposable PostgreSQL/PostGIS database ending in _test"
         )
-    database = url.rsplit("/", 1)[-1].split("?", 1)[0]
-    if not database.endswith("_test"):
-        pytest.fail(
-            "Refusing database integration tests: TEST_DATABASE_URL database name must end in _test"
-        )
+    try:
+        validate_test_database_url(url)
+    except ValueError as exc:
+        pytest.fail(f"Refusing database integration tests: {exc}")
     os.environ["DATABASE_URL"] = url
     from app.core.config import get_settings
 

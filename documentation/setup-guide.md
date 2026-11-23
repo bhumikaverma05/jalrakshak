@@ -26,7 +26,7 @@ npm.cmd install
 Set-Location ..
 ```
 
-Set a private local password in both environment files. `.env` files are ignored by Git; `.env.example` files remain tracked.
+Set a private local password in both environment files. `.env` files are ignored by Git; `.env.example` files remain tracked. Set a private random `SECRET_KEY` of at least 32 characters in `backend/.env` before using authentication. Generate one with `python -c "import secrets; print(secrets.token_urlsafe(48))"` and keep it out of Git.
 
 ## Start PostgreSQL/PostGIS and migrate
 
@@ -67,7 +67,7 @@ Health endpoints: `http://127.0.0.1:8000/healthz`, `http://127.0.0.1:8000/api/v1
 
 ## Test database
 
-Create a dedicated database, separate from development, before integration tests. Never point `TEST_DATABASE_URL` to development or production. The test fixture rejects a database name that does not end in `_test` and applies Alembic migrations to that test database.
+Create a dedicated database, separate from development, before integration tests. Never point `TEST_DATABASE_URL` to development or production. The test fixture accepts only `jalrakshak_test` on `localhost:5433`, rejects any other database, host, or port, and applies Alembic migrations to that test database.
 
 ```powershell
 docker compose exec db createdb -U jalrakshak jalrakshak_test

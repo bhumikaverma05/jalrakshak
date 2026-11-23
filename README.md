@@ -4,7 +4,7 @@ JalRakshak is a greenfield water body monitoring and intelligence system. It com
 
 ## Milestone status
 
-Milestone 2 initialized Git, React/Vite, and FastAPI and passed verification. Milestone 3 adds PostgreSQL/PostGIS models, database sessions, a readiness check, Alembic migrations, and Docker Compose configuration. Start the database using [the setup guide](documentation/setup-guide.md) before using database-backed operations. Authentication workflows and monitoring APIs remain future work. Use placeholder credentials only for local development.
+Milestones 2 and 3 are implemented and verified. Milestone 4 adds citizen registration, Argon2 password hashing, JWT bearer authentication, reusable role authorization, and read-only paginated water-body APIs over the existing PostgreSQL/PostGIS schema. Start the isolated JalRakshak database on host port 5433 using [the setup guide](documentation/setup-guide.md). Monitoring workflows, frontend integration, and satellite/AI features remain future work.
 
 ## Start locally
 
@@ -15,3 +15,5 @@ See the [setup guide](documentation/setup-guide.md), [backend setup](backend/REA
 - [Architecture](documentation/architecture.md)
 - [Database design proposal](documentation/database-design.md)
 - [Development roadmap](documentation/development-roadmap.md)
+- [REST API](documentation/api-documentation.md)
+- [Authentication and authorization](documentation/authentication.md)

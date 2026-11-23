@@ -20,9 +20,14 @@ SessionLocal = sessionmaker(bind=engine, autoflush=False, expire_on_commit=False
 
 
 def get_session() -> Generator[Session, None, None]:
-    """Yield one session and always close it after the request."""
+    """Yield a request-scoped transaction and always close the session."""
     with SessionLocal() as session:
-        yield session
+        try:
+            yield session
+            session.commit()
+        except Exception:
+            session.rollback()
+            raise
 
 
 def check_database_connection() -> dict[str, str]:
