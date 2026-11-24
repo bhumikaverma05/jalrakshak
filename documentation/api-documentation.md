@@ -16,6 +16,12 @@ See [authentication and authorization](./authentication.md) for password rules, 
 
 The existing health checks remain at `/healthz`, `/api/v1/health`, and `/api/v1/health/database`.
 
+## Satellite observations
+
+Satellite history is available to authenticated officers, engineers, and administrators. `GET /api/v1/satellite/water-bodies/{water_body_id}/observations?page=1&page_size=20` returns a paginated observation history ordered by acquisition time, newest first. `GET /api/v1/satellite/observations/{observation_id}` returns one stored observation. Responses include processing provenance and do not expose private raster storage keys. Unknown water bodies or observations return `404`; storage failures return a generic `503`.
+
+Automated Sentinel-2 discovery, download, and processing endpoints are not enabled until an imagery provider, access credentials, and raster storage configuration are approved. See [satellite monitoring](./satellite-monitoring.md) for processing behavior, configuration, and current blockers.
+
 ## Water-body collection
 
 `GET /api/v1/water-bodies?page=1&page_size=20` returns `{ "items": [], "total": 0, "page": 1, "page_size": 20 }` when the registry is empty. `page` starts at 1; `page_size` is limited to 1–100. Ordering is stable by name and ID. Each item contains its ID, code, name, type, village, district, state, description, area, responsible authority, status, and spatial values. `location` is GeoJSON Point; `boundary` is GeoJSON MultiPolygon or explicit `null` when no boundary is stored.
