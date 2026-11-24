@@ -71,7 +71,7 @@ def test_postgis_connectivity_and_migration_head(postgres_engine):
         assert set(Base.metadata.tables).issubset(tables)
         assert (
             connection.execute(text("SELECT version_num FROM alembic_version")).scalar_one()
-            == "20261122_0001"
+            == "20261124_0002"
         )
         spatial_indexes = [
             index
@@ -259,6 +259,106 @@ def test_spatial_types_srid_geojson_and_predicates(db_session):
     assert result[7] > 0
 
 
+def test_report_status_migration_preserves_assignee(postgres_engine):
+    config = Config(str(Path(__file__).resolve().parents[1] / "alembic.ini"))
+    citizen_id = uuid4()
+    assignee_id = uuid4()
+    report_id = uuid4()
+    command.downgrade(config, "20261122_0001")
+    try:
+        with postgres_engine.begin() as connection:
+            connection.execute(
+                text("""
+                    INSERT INTO users
+                        (id, email, full_name, password_hash, role, is_active)
+                    VALUES
+                        (:citizen_id, :citizen_email, 'Test Citizen', 'hash', 'citizen', true),
+                        (:assignee_id, :assignee_email, 'Test Officer', 'hash', 'officer', true)
+                """),
+                {
+                    "citizen_id": citizen_id,
+                    "citizen_email": f"{citizen_id}@example.test",
+                    "assignee_id": assignee_id,
+                    "assignee_email": f"{assignee_id}@example.test",
+                },
+            )
+            connection.execute(
+                text("""
+                    INSERT INTO citizen_reports
+                        (id, reporter_id, assigned_to, category, description,
+                         reported_location, status)
+                    VALUES
+                        (:report_id, :citizen_id, :assignee_id, 'garbage_dumping',
+                         'Legacy assigned report',
+                         ST_SetSRID(ST_MakePoint(77.4, 23.2), 4326), 'assigned')
+                """),
+                {
+                    "report_id": report_id,
+                    "citizen_id": citizen_id,
+                    "assignee_id": assignee_id,
+                },
+            )
+
+        command.upgrade(config, "head")
+        with postgres_engine.connect() as connection:
+            migrated = connection.execute(
+                text("SELECT status, assigned_to FROM citizen_reports WHERE id = :report_id"),
+                {"report_id": report_id},
+            ).one()
+        assert migrated.status == "under_review"
+        assert migrated.assigned_to == assignee_id
+    finally:
+        command.upgrade(config, "head")
+        with postgres_engine.begin() as connection:
+            connection.execute(
+                text("DELETE FROM citizen_reports WHERE id = :report_id"),
+                {"report_id": report_id},
+            )
+            connection.execute(
+                text("DELETE FROM users WHERE id IN (:citizen_id, :assignee_id)"),
+                {"citizen_id": citizen_id, "assignee_id": assignee_id},
+            )
+
+
+def test_report_status_downgrade_refuses_verified_rows(postgres_engine):
+    config = Config(str(Path(__file__).resolve().parents[1] / "alembic.ini"))
+    citizen_id = uuid4()
+    report_id = uuid4()
+    with postgres_engine.begin() as connection:
+        connection.execute(
+            text("""
+                INSERT INTO users (id, email, full_name, password_hash, role, is_active)
+                VALUES (:id, :email, 'Test Citizen', 'hash', 'citizen', true)
+            """),
+            {"id": citizen_id, "email": f"{citizen_id}@example.test"},
+        )
+        connection.execute(
+            text("""
+                INSERT INTO citizen_reports
+                    (id, reporter_id, category, description, reported_location, status)
+                VALUES
+                    (:report_id, :citizen_id, 'garbage_dumping', 'Verified report',
+                     ST_SetSRID(ST_MakePoint(77.4, 23.2), 4326), 'verified')
+            """),
+            {"report_id": report_id, "citizen_id": citizen_id},
+        )
+    try:
+        with pytest.raises(RuntimeError, match="Cannot downgrade citizen-report statuses"):
+            command.downgrade(config, "20261122_0001")
+        with postgres_engine.connect() as connection:
+            assert (
+                connection.execute(text("SELECT version_num FROM alembic_version")).scalar_one()
+                == "20261124_0002"
+            )
+    finally:
+        with postgres_engine.begin() as connection:
+            connection.execute(
+                text("DELETE FROM citizen_reports WHERE id = :report_id"),
+                {"report_id": report_id},
+            )
+            connection.execute(text("DELETE FROM users WHERE id = :id"), {"id": citizen_id})
+
+
 def test_z_migration_downgrade_and_upgrade_on_disposable_database(postgres_engine):
     config = Config(str(Path(__file__).resolve().parents[1] / "alembic.ini"))
     command.downgrade(config, "base")
@@ -267,5 +367,5 @@ def test_z_migration_downgrade_and_upgrade_on_disposable_database(postgres_engin
         assert set(Base.metadata.tables).issubset(set(inspect(connection).get_table_names()))
         assert (
             connection.execute(text("SELECT version_num FROM alembic_version")).scalar_one()
-            == "20261122_0001"
+            == "20261124_0002"
         )

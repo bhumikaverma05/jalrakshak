@@ -41,7 +41,7 @@ Set-Location backend
 .venv\Scripts\python.exe -m alembic current
 ```
 
-The database schema remains the existing migration `20261122_0001_database_foundation.py`. Milestone 4 uses the existing `users` and `water_bodies` tables.
+The database foundation is `20261122_0001_database_foundation.py`. Citizen reporting adds `20261124_0002_citizen_report_statuses.py`, which normalizes legacy `assigned` reports to `under_review` and updates the allowed report statuses. Apply migrations with `alembic upgrade head` before using the new workflow states.
 
 ## Tests, lint, and dependencies
 

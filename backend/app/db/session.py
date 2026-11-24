@@ -25,8 +25,16 @@ def get_session() -> Generator[Session, None, None]:
         try:
             yield session
             session.commit()
+            session.info.pop("pending_evidence_files", None)
         except Exception:
-            session.rollback()
+            try:
+                session.rollback()
+            finally:
+                # File writes are registered by the evidence service so a failed
+                # request commit does not leave an orphaned upload behind.
+                from app.domains.evidence.service import cleanup_pending_files
+
+                cleanup_pending_files(session)
             raise
 
 
