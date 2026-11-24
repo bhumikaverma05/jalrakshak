@@ -1,6 +1,7 @@
 """Environment-backed application settings."""
 
 from functools import lru_cache
+from pathlib import Path
 
 from pydantic import Field, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -22,6 +23,10 @@ class Settings(BaseSettings):
     secret_key: str = ""
     jwt_algorithm: str = "HS256"
     access_token_expire_minutes: int = Field(default=30, ge=1, le=1440)
+    report_duplicate_radius_m: float = Field(default=100, gt=0, le=10_000)
+    report_duplicate_window_hours: int = Field(default=24, ge=1, le=720)
+    evidence_storage_dir: Path = Path(__file__).resolve().parents[2] / "uploads" / "reports"
+    evidence_max_size_bytes: int = Field(default=10_000_000, ge=1024, le=100_000_000)
 
     model_config = SettingsConfigDict(
         env_file=".env",

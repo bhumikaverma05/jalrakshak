@@ -169,7 +169,7 @@ class CitizenReport(TimestampMixin, Base):
     __tablename__ = "citizen_reports"
     __table_args__ = (
         CheckConstraint(
-            "status IN ('submitted','under_review','assigned','resolved','rejected')",
+            "status IN ('submitted','under_review','verified','rejected','resolved')",
             name="status_valid",
         ),
         CheckConstraint(
