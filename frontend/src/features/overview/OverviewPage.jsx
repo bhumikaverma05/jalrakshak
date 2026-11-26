@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { getApiHealth } from '../../services/apiClient.js'
 import './overview.css'
 
@@ -24,19 +25,13 @@ export default function OverviewPage() {
 
   return (
     <main className="overview-shell">
-      <header className="overview-header">
-        <div className="brand-mark" aria-hidden="true">J</div>
-        <div>
-          <p className="eyebrow">Water body monitoring</p>
-          <h1>JalRakshak</h1>
-        </div>
-      </header>
       <section className="welcome-card" aria-labelledby="welcome-title">
-        <p className="eyebrow">Project foundation</p>
-        <h2 id="welcome-title">Monitoring starts with a clear picture.</h2>
+        <p className="eyebrow">GIS water-body registry</p>
+        <h2 id="welcome-title">See registered water bodies on the map.</h2>
         <p className="welcome-copy">
-          The application shell is ready. Monitoring modules will be added in the next milestones.
+          Explore the locations and verified boundaries currently available in the registry.
         </p>
+        <Link className="overview-map-link" to="/map">Open GIS map</Link>
         <div className={`api-status api-status--${health.state}`} role="status">
           <span className="status-dot" />
           <span>{statusLabel}</span>

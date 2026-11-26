@@ -27,6 +27,8 @@ class Settings(BaseSettings):
     report_duplicate_window_hours: int = Field(default=24, ge=1, le=720)
     evidence_storage_dir: Path = Path(__file__).resolve().parents[2] / "uploads" / "reports"
     evidence_max_size_bytes: int = Field(default=10_000_000, ge=1024, le=100_000_000)
+    satellite_mndwi_water_threshold: float = Field(default=0.0, ge=-1, le=1)
+    satellite_analysis_pixel_size_m: float = Field(default=20.0, gt=0, le=120)
 
     model_config = SettingsConfigDict(
         env_file=".env",

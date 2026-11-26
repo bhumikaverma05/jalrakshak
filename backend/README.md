@@ -58,3 +58,9 @@ Set-Location backend
 ```
 
 See [local setup](../documentation/setup-guide.md) and [database architecture](../documentation/database-design.md) for Docker, PostGIS, test database setup, backup/restore, and verified GIS import guidance.
+
+## Satellite processing foundation
+
+The satellite processing foundation uses NumPy and Rasterio (declared in `pyproject.toml`) for array math, band alignment, reprojection, and masking. `SATELLITE_MNDWI_WATER_THRESHOLD` defaults to `0.0` as a configurable pilot value; calibrate it against reviewed local imagery before treating derived areas as operational measurements. `SATELLITE_ANALYSIS_PIXEL_SIZE_M` defaults to `20`, matching the coarser Sentinel-2 B11/SCL resolution. The processor only accepts verified water bodies with a stored polygon boundary.
+
+Sentinel-2 discovery/download is behind the `Sentinel2Provider` contract. Read-only observation/history APIs are available, but no provider credentials or concrete provider are configured, so live imagery processing is not enabled. Do not add credentials to source control; configure the selected provider through deployment environment variables when approved. Synthetic unit tests do not use satellite observations or a database.

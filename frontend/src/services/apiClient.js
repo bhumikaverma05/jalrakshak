@@ -11,4 +11,12 @@ export async function getApiHealth() {
   return data
 }
 
+export async function getWaterBodies({ page = 1, pageSize = 100, signal } = {}) {
+  const { data } = await apiClient.get('/water-bodies', {
+    params: { page, page_size: pageSize },
+    signal,
+  })
+  return data
+}
+
 export default apiClient
