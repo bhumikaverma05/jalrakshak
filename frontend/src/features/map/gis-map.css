@@ -1,0 +1,76 @@
+.gis-page {
+  min-height: calc(100vh - 76px);
+  padding: 30px clamp(16px, 4vw, 52px) 22px;
+  background: #f4f8f8;
+}
+
+.gis-page__heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; margin-bottom: 20px; }
+.gis-page__heading h1 { margin: 0; color: #103247; font-family: Manrope, sans-serif; font-size: clamp(26px, 3vw, 36px); letter-spacing: -.035em; }
+.gis-page__heading p:not(.map-eyebrow) { margin: 7px 0 0; color: #657b82; font-size: 14px; }
+.map-eyebrow { margin: 0 0 7px; color: #438878; font-size: 10px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+.refresh-button, .map-state button, .map-pagination button { border: 1px solid #cbdcd8; border-radius: 10px; background: #fff; color: #185b52; cursor: pointer; font-size: 13px; font-weight: 700; padding: 10px 13px; }
+.refresh-button:hover, .map-state button:hover, .map-pagination button:hover:not(:disabled) { border-color: #77b6a6; background: #f1f8f5; }
+.refresh-button:disabled, .map-pagination button:disabled { cursor: not-allowed; opacity: .55; }
+.refresh-button:focus-visible, .map-state button:focus-visible, .map-pagination button:focus-visible, .water-body-list__item:focus-visible { outline: 3px solid #83cbb8; outline-offset: 2px; }
+
+.gis-layout { display: grid; grid-template-columns: minmax(300px, 360px) minmax(0, 1fr); gap: 18px; align-items: stretch; }
+.map-panel { display: flex; min-height: 610px; max-height: 78vh; flex-direction: column; overflow: auto; border: 1px solid #e0e9e8; border-radius: 18px; background: #fff; box-shadow: 0 10px 28px rgba(18, 59, 70, .05); }
+.map-panel__section-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 18px 18px 14px; border-bottom: 1px solid #edf1f0; }
+.map-panel__section-heading h2 { margin: 0; color: #163847; font-size: 17px; }
+.map-panel__section-heading p, .map-panel__page { margin: 4px 0 0; color: #75878c; font-size: 11px; }
+.map-state { margin: 14px; padding: 14px; border-radius: 12px; color: #526b72; font-size: 13px; line-height: 1.55; }
+.map-state--loading, .map-state--empty { background: #f3f8f7; }
+.map-state--error { border: 1px solid #efd2ce; background: #fff6f4; color: #88433d; }
+.map-state--error p { margin: 0 0 10px; }
+.map-state--error button { border-color: #e6c2bd; color: #88433d; }
+.map-panel__hint { margin: 18px; color: #71858b; font-size: 13px; line-height: 1.5; }
+
+.water-body-list { display: grid; gap: 5px; margin: 0; padding: 9px; list-style: none; }
+.water-body-list__item { display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 14px; padding: 11px 10px; border: 1px solid transparent; border-radius: 11px; background: #fff; color: #193a45; cursor: pointer; text-align: left; }
+.water-body-list__item:hover { background: #f7faf9; }
+.water-body-list__item.is-selected { border-color: #bedbd3; background: #edf7f3; }
+.water-body-list__item strong, .water-body-list__item small { display: block; }
+.water-body-list__item strong { font-size: 13px; }
+.water-body-list__item small { margin-top: 4px; color: #71848a; font-size: 10px; text-transform: capitalize; }
+.status-dot { width: 10px; height: 10px; flex: 0 0 auto; border-radius: 50%; background: #52727a; }
+.status-dot--verified, .map-legend__swatch--verified { background: #16836e; }
+.status-dot--preliminary, .map-legend__swatch--preliminary { background: #c48a24; }
+.status-dot--rejected, .map-legend__swatch--rejected { background: #bd5a52; }
+
+.map-pagination { display: flex; justify-content: space-between; gap: 8px; padding: 2px 16px 12px; }
+.map-pagination button { padding: 8px 10px; }
+.water-detail { margin-top: 2px; padding: 16px 17px; border-top: 1px solid #edf1f0; }
+.water-detail__title-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.water-detail__title-row h3 { margin: 0; color: #153947; font-size: 16px; }
+.water-detail__title-row .map-eyebrow { margin-bottom: 5px; }
+.status-pill { display: inline-flex; flex: 0 0 auto; align-items: center; border-radius: 999px; padding: 5px 9px; background: #edf2f1; color: #536a70; font-size: 10px; font-weight: 800; text-transform: capitalize; }
+.status-pill--verified { background: #e5f3ee; color: #11634f; }
+.status-pill--preliminary { background: #fff4df; color: #8d6217; }
+.status-pill--rejected { background: #fbeae8; color: #93463f; }
+.water-detail__fields { display: grid; grid-template-columns: 1fr 1fr; gap: 11px 14px; margin: 17px 0 0; }
+.water-detail__fields div { min-width: 0; }
+.water-detail__fields dt { color: #7b8d91; font-size: 10px; font-weight: 700; }
+.water-detail__fields dd { overflow-wrap: anywhere; margin: 4px 0 0; color: #284852; font-size: 12px; line-height: 1.45; }
+.water-detail__description { grid-column: 1 / -1; }
+.boundary-notice { margin: 14px 0 0; padding: 10px 11px; border-radius: 9px; background: #fff7e8; color: #795b26; font-size: 11px; line-height: 1.45; }
+.map-legend { display: flex; flex-wrap: wrap; gap: 10px 14px; margin-top: auto; padding: 14px 17px; border-top: 1px solid #edf1f0; color: #687c82; font-size: 10px; }
+.map-legend span { display: inline-flex; align-items: center; gap: 6px; text-transform: capitalize; }
+.map-legend__swatch { display: inline-block; width: 9px; height: 9px; border-radius: 50%; }
+
+.map-frame { position: relative; min-width: 0; min-height: 610px; overflow: hidden; border: 1px solid #d9e5e2; border-radius: 18px; background: #e9f0ed; box-shadow: 0 10px 28px rgba(18, 59, 70, .06); }
+.gis-map { width: 100%; height: 100%; min-height: 610px; }
+.map-overlay-state { position: absolute; z-index: 500; top: 16px; left: 50%; max-width: calc(100% - 32px); transform: translateX(-50%); border: 1px solid #dce8e4; border-radius: 11px; background: rgba(255, 255, 255, .95); padding: 10px 14px; color: #3e6264; font-size: 12px; box-shadow: 0 4px 12px rgba(18, 59, 70, .09); }
+.map-overlay-state--error { border-color: #efd2ce; color: #88433d; }
+.map-footer-note { margin: 12px 2px 0; color: #71858a; font-size: 11px; }
+
+@media (max-width: 900px) {
+  .gis-layout { grid-template-columns: minmax(260px, 320px) minmax(0, 1fr); }
+}
+
+@media (max-width: 720px) {
+  .gis-page { padding: 22px 12px 18px; }
+  .gis-page__heading { align-items: flex-start; flex-direction: column; }
+  .gis-layout { grid-template-columns: 1fr; }
+  .map-panel { min-height: auto; max-height: none; }
+  .map-frame, .gis-map { min-height: 55vh; }
+}

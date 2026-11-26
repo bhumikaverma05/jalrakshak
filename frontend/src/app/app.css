@@ -1,0 +1,30 @@
+.site-header {
+  position: relative;
+  z-index: 1000;
+  display: flex;
+  min-height: 76px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 12px clamp(18px, 5vw, 64px);
+  border-bottom: 1px solid #e3eceb;
+  background: rgba(255, 255, 255, .97);
+}
+
+.site-brand { display: inline-flex; align-items: center; gap: 12px; color: #103247; text-decoration: none; }
+.site-brand__mark { display: grid; width: 44px; height: 44px; place-items: center; border-radius: 14px; background: #0d3548; color: #e8fbf5; font-size: 22px; font-weight: 800; }
+.site-brand__eyebrow, .site-brand__name { display: block; }
+.site-brand__eyebrow { color: #438878; font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.site-brand__name { margin-top: 2px; font-family: Manrope, sans-serif; font-size: 18px; font-weight: 800; }
+.site-navigation { display: flex; align-items: center; gap: 8px; }
+.site-navigation__link { padding: 10px 14px; border-radius: 10px; color: #50666d; font-size: 14px; font-weight: 700; text-decoration: none; }
+.site-navigation__link:hover { background: #f0f6f4; color: #0d665b; }
+.site-navigation__link.is-active { background: #e7f3ef; color: #0d665b; }
+.site-navigation__link:focus-visible, .site-brand:focus-visible { outline: 3px solid #83cbb8; outline-offset: 3px; }
+
+@media (max-width: 520px) {
+  .site-header { align-items: flex-start; flex-direction: column; gap: 10px; padding: 12px 16px; }
+  .site-brand__mark { width: 38px; height: 38px; }
+  .site-navigation { width: 100%; }
+  .site-navigation__link { flex: 1; text-align: center; }
+}
